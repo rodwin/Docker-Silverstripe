@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+
+  web:
+    build: .
+    volumes_from:
+      - volumes_source
+    ports:
+      - "8080:80"
+
+  mysql:
+    image: mysql:latest
+    volumes_from:
+      - volumes_data
+    ports:
+      - "33066:3306"
+    environment:
+      MYSQL_DATABASE: ss
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+
+  volumes_source:
+    image: tianon/true
+    volumes:
+      - ./src/:/var/www/html
+      - ./data/logs/:/var/log/apache
+
+  volumes_data:
+    image: tianon/true
+    volumes:
+      - ./data/mysql:/var/lib/mysql
